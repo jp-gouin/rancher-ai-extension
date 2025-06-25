@@ -1,0 +1,19 @@
+{
+  "name": "rancher-ia-assistant",
+  "description": "rancher-ia-assistant plugin",
+  "version": "0.1.1",
+  "private": false,
+  "rancher": true,
+  "engines": {
+    "node": ">=16"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/cli-plugin-typescript": "~5.0.0"
+  },
+  "files": [
+    "**/*"
+  ],
+  "main": "rancher-ia-assistant-0.1.1.umd.min.js"
+}

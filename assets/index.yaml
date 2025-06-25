@@ -11,6 +11,25 @@ entries:
       catalog.cattle.io/ui-component: plugins
       catalog.cattle.io/ui-extensions-version: '>= 3.0.0 < 4.0.0'
     apiVersion: v2
+    appVersion: 0.1.1
+    created: "2025-06-25T13:41:59.940661254Z"
+    description: rancher-ia-assistant plugin
+    digest: b8e76c4b5ae45b7cf3ccf52b560f7d239cdb2f07cac0bb1e9f6b26f80ecf0cb6
+    name: rancher-ia-assistant
+    type: application
+    urls:
+    - assets/rancher-ia-assistant/rancher-ia-assistant-0.1.1.tgz
+    version: 0.1.1
+  - annotations:
+      catalog.cattle.io/certified: rancher
+      catalog.cattle.io/namespace: cattle-ui-plugin-system
+      catalog.cattle.io/os: linux
+      catalog.cattle.io/permits-os: linux, windows
+      catalog.cattle.io/rancher-version: '>= 2.10.0'
+      catalog.cattle.io/scope: management
+      catalog.cattle.io/ui-component: plugins
+      catalog.cattle.io/ui-extensions-version: '>= 3.0.0 < 4.0.0'
+    apiVersion: v2
     appVersion: 0.1.0
     created: "2025-06-16T08:54:21.181756507Z"
     description: rancher-ia-assistant plugin
@@ -20,4 +39,4 @@ entries:
     urls:
     - assets/rancher-ia-assistant/rancher-ia-assistant-0.1.0.tgz
     version: 0.1.0
-generated: "2025-06-16T08:54:21.181237581Z"
+generated: "2025-06-25T13:41:59.940086179Z"
