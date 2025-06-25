@@ -16,5 +16,8 @@ export default {
   },
   systemPrompt(state: any){
     return state.config.systemPrompt;
+  },
+  backendUrl(state: any){
+    return state.config.backendUrl;
   }
 };

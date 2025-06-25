@@ -6,6 +6,7 @@ import ViewNamespacedResource from '@shell/pages/c/_cluster/_product/_resource/_
 import ChatBotPage from '../pages/chatBotPage.vue';
 import ConfigurationPage from '../pages/configurationPage.vue';
 import RancherBotOWUI from '../pages/rancherBotOWUI.vue';
+import Chat from '../pages/simpleChat.vue';
 const BLANK_CLUSTER = '_';
 // to achieve naming consistency throughout the extension
 // we recommend this to be defined on a config file and exported
@@ -13,6 +14,7 @@ const BLANK_CLUSTER = '_';
 const YOUR_PRODUCT_NAME = 'rancher-ai-assistant';
 const CUSTOM_PAGE_NAME = 'RancherBot';
 const CUSTOM_PAGE_OWUI = 'RancherBotOWUI';
+const CUSTOM_PAGE_SCHAT = 'Chat';
 const CUSTOM_PAGE_CONFIG = 'Config';
 const routes = [
   // this covers the "custom page"
@@ -38,6 +40,15 @@ const routes = [
     name:      `${ YOUR_PRODUCT_NAME }-c-cluster-${ CUSTOM_PAGE_OWUI }`,
     path:      `/${ YOUR_PRODUCT_NAME }/c/:cluster/${ CUSTOM_PAGE_OWUI }`,
     component: RancherBotOWUI,
+    meta:      {
+      product: YOUR_PRODUCT_NAME,
+      cluster: BLANK_CLUSTER
+    },
+  },
+  {
+    name:      `${ YOUR_PRODUCT_NAME }-c-cluster-${ CUSTOM_PAGE_SCHAT }`,
+    path:      `/${ YOUR_PRODUCT_NAME }/c/:cluster/${ CUSTOM_PAGE_SCHAT }`,
+    component: Chat,
     meta:      {
       product: YOUR_PRODUCT_NAME,
       cluster: BLANK_CLUSTER

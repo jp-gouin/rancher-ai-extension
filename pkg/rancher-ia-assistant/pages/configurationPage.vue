@@ -34,6 +34,16 @@
           class="input"
         />
       </div>
+      <div class="form-section">
+        <label for="backendUrl">Backend API URL</label>
+        <input
+          id="backendUrl"
+          v-model="backendUrl"
+          type="text"
+          placeholder="https://chat.10.144.97.97"
+          class="input"
+        />
+      </div>
 
       <div class="form-section">
         <label for="mcpServer">MCP Server URL (Tools Backend)</label>
@@ -77,6 +87,7 @@ export default {
       mcpServer: this.$store.getters['rancher-ai-assistant/mcpServer'],
       token: this.$store.getters['rancher-ai-assistant/token'],
       systemPrompt: this.$store.getters['rancher-ai-assistant/systemPrompt'],
+      backendUrl: this.$store.getters['rancher-ai-assistant/backend'],
     };
   },
   computed: {

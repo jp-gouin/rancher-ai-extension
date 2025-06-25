@@ -22,5 +22,8 @@ export default {
     SET_SPROMPT(state: any, systemPrompt: string) {
         state.config.systemPrompt = systemPrompt;
     },
+    SET_BACKEND_URL(state: any, backendUrl: string) {
+        state.config.backendUrl = backendUrl;
+    },
   };
   

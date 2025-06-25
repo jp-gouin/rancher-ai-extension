@@ -11,6 +11,7 @@ export function init($plugin: IPlugin, store: any) {
   const YOUR_K8S_RESOURCE_NAME = 'provisioning.cattle.io.cluster';
   const CUSTOM_PAGE_NAME = 'RancherBot';
   const CUSTOM_PAGE_OWUI = 'RancherBotOWUI';
+  const CUSTOM_PAGE_SCHAT = 'Chat';
   const CUSTOM_PAGE_CONFIG = 'Config';
   
   const { 
@@ -89,7 +90,18 @@ export function init($plugin: IPlugin, store: any) {
       }
     }
   });
+  virtualType({
+    labelKey: 'some.translation.key',
+    name:     CUSTOM_PAGE_SCHAT,
+    route:    {
+      name:   `${ YOUR_PRODUCT_NAME }-c-cluster-${ CUSTOM_PAGE_SCHAT }`,
+      params: {
+        product: YOUR_PRODUCT_NAME,
+        cluster: BLANK_CLUSTER
+      }
+    }
+  });
 
   // registering the defined pages as side-menu entries
-  basicType([YOUR_K8S_RESOURCE_NAME, CUSTOM_PAGE_NAME, CUSTOM_PAGE_CONFIG, CUSTOM_PAGE_OWUI]);
+  basicType([YOUR_K8S_RESOURCE_NAME, CUSTOM_PAGE_NAME, CUSTOM_PAGE_CONFIG, CUSTOM_PAGE_OWUI, CUSTOM_PAGE_SCHAT]);
 }

@@ -55,48 +55,8 @@ function timestamp(): string {
     commit('SET_MCP_SERVER', content.mcpServer);
     commit('SET_TOKEN', content.token);
     commit('SET_SPROMPT', content.systemPrompt);
+    commit('SET_BACKEND_URL', content.backendUrl);
     commit('SET_LOADING', true); // 🔄 Show loader
-    const mcpServer = state.config.mcpServer;
-    if (mcpServer) {
-      // Ollama Tool spec (example payload)
-      const toolSpec = {
-          name: 'rancher-ai-assistant',
-          description: 'AI assistant integrated with Rancher',
-          commands: [
-            {
-              name: 'ask',
-              description: 'Ask a question to the AI assistant',
-              parameters: [
-                {
-                  name: 'query',
-                  type: 'string',
-                  required: true,
-                }
-              ]
-            }
-          ],
-          // Add other fields per Ollama tool spec if needed
-        };
-    
-        try {
-          const res = await fetch(`${mcpServer}/api/tools`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(toolSpec),
-          });
-    
-          if (!res.ok) {
-            throw new Error(`Failed to configure Ollama tool: ${res.statusText}`);
-          }
-    
-          const result = await res.json();
-          console.log('Ollama tool configured:', result);
-          return result;
-        } catch (err) {
-          console.error('Error configuring Ollama tool:', err);
-          throw err;
-        }
-    }
   /*   if (state.config.systemPrompt) {
       try {
         const response = await fetch(content.ollamaUrl+'/api/generate', {
