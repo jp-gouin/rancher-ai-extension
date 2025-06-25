@@ -6,16 +6,20 @@ import json
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
 import os
+from ollama import Client
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://localhost:8006"],  # Or use ["http://localhost:5173"] if you're using Vite
+    allow_origins=["https://rancher.10.144.97.97.sslip.io"],  # Or use ["http://localhost:5173"] if you're using Vite
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-ollama.base_url = os.getenv('OLLAMA_SERVER_URL', "http://localhost:11434")
+base_url = os.getenv('OLLAMA_SERVER_URL', "http://open-webui-ollama.suseai.svc.cluster.local:11434")
+client = Client(
+  host=base_url,
+)
 
 # ------------------- Tool Functions -------------------
 def get_time() -> str:
@@ -56,7 +60,7 @@ async def chat_endpoint(request: Request, prompt: str = ""):
         function_call = None
 
         # ---- 1st Call: Initial model response w/ potential function_call ----
-        stream = ollama.chat(
+        stream = client.chat(
             model="qwen3:4b",
             messages=messages,
             tools=[add_two_numbers, get_time],
@@ -89,7 +93,7 @@ async def chat_endpoint(request: Request, prompt: str = ""):
             messages.append({'role': 'tool', 'content': tool_output, 'name': tool_name})
 
             # Second LLM response using tool output
-            second_stream = ollama.chat(
+            second_stream = client.chat(
                 model="qwen3:4b",
                 messages=messages,
                 stream=True
