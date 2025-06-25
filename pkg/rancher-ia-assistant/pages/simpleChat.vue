@@ -50,8 +50,10 @@ export default {
       this.messages.push({ role: "user", content: prompt, streaming: false });
       this.messages.push({ role: "assistant", content: "", streamedThinking: "",streamedResponse: "" ,isThinking: false, streaming: false, expanded: true });
       this.input = "";
+
+     console.log(document.cookie)
  
-      const eventSource = new EventSource("https://rancher-ai-assistant-backend.10.144.97.97.sslip.io/chat?prompt=" + encodeURIComponent(prompt), { withCredentials: true });
+      const eventSource = new EventSource("https://rancher.10.144.97.97.sslip.io/ai/chat?prompt=" + encodeURIComponent(prompt), { withCredentials: true });
 
       eventSource.onmessage = (event) => {
         let currentMessage = this.messages[this.messages.length - 1];
