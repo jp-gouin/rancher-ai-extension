@@ -53,14 +53,16 @@ spec:
             - "{ .Values.mcpo.key }}"
             - "--config"
             - "/etc/config/config.json"
-          {{- with .Values.livenessProbe }}
+          {{- /*
+ {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.readinessProbe }}
           readinessProbe:
             {{- toYaml . | nindent 12 }}
-          {{- end }}
+          {{- end }} 
+*/ -}}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
