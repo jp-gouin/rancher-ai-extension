@@ -1,6 +1,0 @@
-plugin/img/harvester.20240f8a.png
-plugin/package.json
-plugin/rancher-ia-assistant-0.1.3.umd.min.60.js
-plugin/rancher-ia-assistant-0.1.3.umd.min.60.js.map
-plugin/rancher-ia-assistant-0.1.3.umd.min.js
-plugin/rancher-ia-assistant-0.1.3.umd.min.js.map
