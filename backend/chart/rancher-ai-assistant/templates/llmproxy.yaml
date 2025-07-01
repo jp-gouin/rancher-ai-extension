@@ -49,7 +49,7 @@ spec:
             - name: RANCHER_URL
               value: "{{ .Values.rancherUrl }}"
             - name: OLLAMA_SERVER_URL
-              value: "http://{{ include "rancher-ai-assistant.fullname" . }}-ollama.{{- .Release.Namespace -}}.svc.cluster.local:11434"
+              value: "http://{{ .Release.Name }}-ollama.{{- .Release.Namespace -}}.svc.cluster.local:11434"
             - name: MCPO_URL
               value: "http://{{ include "rancher-ai-assistant.fullname" . }}-mcpo.{{- .Release.Namespace -}}.svc.cluster.local/toolbox"
           {{- with .Values.livenessProbe }}
