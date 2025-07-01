@@ -17,23 +17,24 @@ rancherUrl: "https://rancher.example.com"
 
 # Ollama configuration
 ollama:
-  gpu:
-    # -- Enable GPU integration
-    enabled: false
+  ollama:
+    gpu:
+      # -- Enable GPU integration
+      enabled: false
+      
+      # -- GPU type: 'nvidia' or 'amd'
+      type: 'nvidia'
+      
+      # -- Specify the number of GPU to 1
+      number: 1
     
-    # -- GPU type: 'nvidia' or 'amd'
-    type: 'nvidia'
-    
-    # -- Specify the number of GPU to 1
-    number: 1
-   
-  # -- List of models to pull at container startup
-  models:
-    run: 
-      - qwen3:1.7b
-    pull:
-      - qwen3:1.7b
-      - qwen3:4b
+    # -- List of models to pull at container startup
+    models:
+      run: 
+        - qwen3:1.7b
+      pull:
+        - qwen3:1.7b
+        - qwen3:4b
 
 mcpo:
   image:
