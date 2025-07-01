@@ -134,8 +134,7 @@ async def chat_endpoint(request: Request, prompt: str = ""):
         except Exception as e:
             yield {"data": f"Error loading tools: {str(e)}"}
             return
-        while True:
-            # Open a stream to the LLM
+        # Open a stream to the LLM
         # ---- 1st Call: Initial model response w/ potential function_call ----
         stream = client.chat(
             model="qwen3:1.7b",

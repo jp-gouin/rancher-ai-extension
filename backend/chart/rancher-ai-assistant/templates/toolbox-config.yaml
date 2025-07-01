@@ -5,626 +5,626 @@ metadata:
 data:
   tools.yaml: |
     sources:
-    rancher-api:
-        kind: http
-        baseUrl: https://rancher.cattle-system.svc.cluster.local:443/
-        headers:
-          Content-Type: application/json
-        disableSslVerification: true
-    rancher-docs:
-        kind: http
-        baseUrl: https://ranchermanager.docs.rancher.com/
+      rancher-api:
+          kind: http
+          baseUrl: https://rancher.cattle-system.svc.cluster.local:443/
+          headers:
+            Content-Type: application/json
+          disableSslVerification: true
+      rancher-docs:
+          kind: http
+          baseUrl: https://ranchermanager.docs.rancher.com/
 
     tools:
-        userPermissions: 
-          kind: http
-          source: rancher-docs
-          method: GET
-          path: /how-to-guides/new-user-guides/authentication-permissions-and-global-configuration/manage-role-based-access-control-rbac/cluster-and-project-roles
-          description: Cluster and project roles define user authorization inside a cluster or project
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
+      userPermissions: 
+        kind: http
+        source: rancher-docs
+        method: GET
+        path: /how-to-guides/new-user-guides/authentication-permissions-and-global-configuration/manage-role-based-access-control-rbac/cluster-and-project-roles
+        description: Cluster and project roles define user authorization inside a cluster or project
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      authConfigs: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/authconfigs
+        description: Authentication configuration in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      cloudCredentials: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/cloudcredentials
+        description: Cloud credentials in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      clusterRegistrationTokens: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/clusterregistrationtokens
+        description: cluster registration tokens in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      clusterRoleTemplateBindings: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/clusterroletemplatebindings
+        description: cluster role template in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      clusterTemplateRevisions: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/clustertemplaterevisions
+        description: cluster template revisions in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      clusterTemplates: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/clustertemplates
+        description: cluster templates in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      clusters: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/clusters
+        description: clusters in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      composeConfigs: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/composeconfigs
+        description: compose configurations in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      dynamicSchemas: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/dynamicschemas
+        description: dyanmic schemas in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      etcdBackups: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/etcdbackups
+        description: etcd backups in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      features: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/features
+        description: enabled features in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      fleetWorkspaces: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/fleetworkspaces
+        description: fleet workspaces in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      globalRoleBindings: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/globalrolebindings
+        queryParams:
+        requestBody: |
+          {
+              "type": "collection",
+              "links": {
+              "self": "…/v3/globalRoleBindings"
+              },
+              "createTypes": {
+              "globalRoleBinding": "…/v3/globalrolebindings"
+              },
+              "actions": { },
+              "pagination": {
+              "limit": 1000,
+              "total": 1
+              },
+              "sort": {
+              "order": "asc",
+              "reverse": "…/v3/globalRoleBindings?order=desc&userId={{.userId}}",
+              "links": {
+              "uuid": "…/v3/globalRoleBindings?sort=uuid&userId={{.userId}}"
+              }
+              },
+              "filters": {
+              "created": null,
+              "creatorId": null,
+              "globalRoleId": null,
+              "groupPrincipalId": null,
+              "name": null,
+              "removed": null,
+              "userId": [
+              {
+              "modifier": "eq",
+              "value": "{{.userId}}"
+              }
+              ],
+              "userPrincipalId": null,
+              "uuid": null
+              },
+              "resourceType": "globalRoleBinding",
+              "data": [
+              {
+              "annotations": {
+              "cleanup.cattle.io/grbUpgradeCluster": "true",
+              "lifecycle.cattle.io/create.mgmt-auth-grb-controller": "true"
+              },
+              "baseType": "globalRoleBinding",
+              "created": "",
+              "createdTS": ,
+              "creatorId": null,
+              "globalRoleId": "",
+              "groupPrincipalId": null,
+              "id": "globalrolebinding-cs4v4",
+              "labels": {
+              "authz.management.cattle.io/bootstrapping": "admin-user"
+              },
+              "links": {
+              "remove": "…/v3/globalRoleBindings/globalrolebinding-cs4v4",
+              "self": "…/v3/globalRoleBindings/globalrolebinding-cs4v4",
+              "update": "…/v3/globalRoleBindings/globalrolebinding-cs4v4"
+              },
+              "name": "globalrolebinding-cs4v4",
+              "status": {
+              "lastUpdateTime": "",
+              "localConditions": [ 4 items
+              {
+              "lastTransitionTime": "",
+              "message": "",
+              "reason": "SubjectExists",
+              "status": "True",
+              "type": "SubjectReconciled"
+              },
+              {
+              "lastTransitionTime": "",
+              "message": "",
+              "reason": "ClusterPermissionsReconciled",
+              "status": "True",
+              "type": "ClusterPermissionsReconciled"
+              },
+              {
+              "lastTransitionTime": "",
+              "message": "",
+              "reason": "GlobalRoleBindingReconciled",
+              "status": "True",
+              "type": "GlobalRoleBindingReconciled"
+              },
+              {
+              "lastTransitionTime": "",
+              "message": "",
+              "reason": "NamespacedRoleBindingReconciled",
+              "status": "True",
+              "type": "NamespacedRoleBindingReconciled"
+              }
+              ],
+              "observedGenerationLocal": 1,
+              "observedGenerationRemote": 2,
+              "remoteConditions": [
+              {
+              "lastTransitionTime": "",
+              "message": "",
+              "reason": "ClusterAdminRoleExists",
+              "status": "True",
+              "type": "ClusterAdminRoleExists"
+              }
+              ],
+              "summary": "Completed",
+              "summaryLocal": "Completed",
+              "summaryRemote": "Completed",
+              "type": "/v3/schemas/globalRoleBindingStatus"
+              },
+              "type": "globalRoleBinding",
+              "userId": "{{.userId}}",
+              "userPrincipalId": "local://{{.userId}}",
+              "uuid": ""
+              }
+              ]
+              }
+        bodyParams:
+          - name: userid
+            description: userid of the user
             type: string
-        authConfigs: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/authconfigs
-          description: Authentication configuration in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
+        description: global role bindings in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      globalRoles: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/globalroles
+        requestBody: |
+              {
+              "username": {{.username}}
+              }
+        bodyParams:
+          - name: username
+            description: name of the user
             type: string
-        cloudCredentials: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/cloudcredentials
-          description: Cloud credentials in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
+        description: global roles in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      groupMembers: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/groupmembers
+        requestBody: |
+              {
+              "username": {{.username}}
+              }
+        bodyParams:
+          - name: username
+            description: name of the user
             type: string
-        clusterRegistrationTokens: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/clusterregistrationtokens
-          description: cluster registration tokens in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
+        description: group members in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      groups: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/groups
+        requestBody: |
+              {
+              "username": {{.username}}
+              }
+        bodyParams:
+          - name: username
+            description: name of the user
             type: string
-        clusterRoleTemplateBindings: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/clusterroletemplatebindings
-          description: cluster role template in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
+        description: groups in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      kontainerDrivers: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/kontainerdrivers
+        description: containers drivers in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      ldapConfigs: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/ldapconfigs
+        description: ldap configurations in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      managementSecrets: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/managementsecrets
+        description: management secrets in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      nodeDrivers: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/nodedrivers
+        description: node drivers in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      nodePools: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/nodepools
+        description: node pools in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      nodeTemplates: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/nodetemplates
+        description: node templates in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      nodes: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/nodes
+        description: nodes in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      podSecurityAdmissionConfigurationTemplates: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/podsecurityadmissionconfigurationtemplates
+        description: pod security admission configuration templates in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      preferences: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/preferences
+        description: preferences in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      principals: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/principals
+        description: principals in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      projectNetworkPolicies: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/projectnetworkpolicies
+        description: project network polices in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      projectRoleTemplateBindings: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/projectroletemplatebindings
+        description: project role template bindings in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      projects: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/projects
+        description: projects in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      rancherUserNotifications: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/rancherusernotifications
+        description: Rancher user notifications
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      rkeAddons: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/rkeaddons
+        description: RKE2 addons in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      rkeK8sServiceOptions: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/rkek8sserviceoptions
+        description: RKE2 kubernetes service options in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      rkeK8sSystemImages: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/rkek8ssystemimages
+        description: RKE2 system images in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      roleTemplates: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/roletemplates
+        description: role templates in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      root: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3
+        description: root api in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      samlTokens: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/samltokens
+        description: samltokens in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      self: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3
+        description: self api in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      settings: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/settings
+        description: settings in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      subscribe: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/subscribe
+        description: subscribe api in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      tokens: 
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/tokens
+        description: tokens in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      users:
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/users
+        description: find all users in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+      userById:
+        kind: http
+        source: rancher-api
+        method: GET
+        path: /v3/users
+        queryParams:
+        requestBody: |
+              {
+                    "actions": {
+                    "refreshauthprovideraccess": "…/v3/users/{{.userId}}?action=refreshauthprovideraccess",
+                    "setpassword": "…/v3/users/{{.userId}}?action=setpassword"
+                    },
+                    "annotations": {
+                    },
+                    "links": {
+                    "clusterRoleTemplateBindings": "…/v3/clusterRoleTemplateBindings?userId={{.userId}}",
+                    "globalRoleBindings": "…/v3/globalRoleBindings?userId={{.userId}}",
+                    "projectRoleTemplateBindings": "…/v3/projectRoleTemplateBindings?userId={{.userId}}",
+                    "remove": "…/v3/users/{{.userId}}",
+                    "self": "…/v3/users/{{.userId}}",
+                    "tokens": "…/v3/tokens?userId={{.userId}}",
+                    "update": "…/v3/users/{{.userId}}"
+                    },
+                    "me": true,
+                    "mustChangePassword": false,
+                    "name": "",
+                    "principalIds": [
+                    "local://{{.userId}}"
+                    ],
+                    "state": "",
+                    "transitioning": "no",
+                    "transitioningMessage": "",
+                    "type": "user",
+                    "username": "",
+                    "uuid": ""
+              }
+        bodyParams:
+          - name: userid
+            description: name of the user
             type: string
-        clusterTemplateRevisions: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/clustertemplaterevisions
-          description: cluster template revisions in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        clusterTemplates: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/clustertemplates
-          description: cluster templates in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        clusters: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/clusters
-          description: clusters in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        composeConfigs: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/composeconfigs
-          description: compose configurations in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        dynamicSchemas: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/dynamicschemas
-          description: dyanmic schemas in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        etcdBackups: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/etcdbackups
-          description: etcd backups in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        features: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/features
-          description: enabled features in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        fleetWorkspaces: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/fleetworkspaces
-          description: fleet workspaces in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        globalRoleBindings: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/globalrolebindings
-          queryParams:
-          requestBody: |
-            {
-                "type": "collection",
-                "links": {
-                "self": "…/v3/globalRoleBindings"
-                },
-                "createTypes": {
-                "globalRoleBinding": "…/v3/globalrolebindings"
-                },
-                "actions": { },
-                "pagination": {
-                "limit": 1000,
-                "total": 1
-                },
-                "sort": {
-                "order": "asc",
-                "reverse": "…/v3/globalRoleBindings?order=desc&userId={{.userId}}",
-                "links": {
-                "uuid": "…/v3/globalRoleBindings?sort=uuid&userId={{.userId}}"
-                }
-                },
-                "filters": {
-                "created": null,
-                "creatorId": null,
-                "globalRoleId": null,
-                "groupPrincipalId": null,
-                "name": null,
-                "removed": null,
-                "userId": [
-                {
-                "modifier": "eq",
-                "value": "{{.userId}}"
-                }
-                ],
-                "userPrincipalId": null,
-                "uuid": null
-                },
-                "resourceType": "globalRoleBinding",
-                "data": [
-                {
-                "annotations": {
-                "cleanup.cattle.io/grbUpgradeCluster": "true",
-                "lifecycle.cattle.io/create.mgmt-auth-grb-controller": "true"
-                },
-                "baseType": "globalRoleBinding",
-                "created": "",
-                "createdTS": ,
-                "creatorId": null,
-                "globalRoleId": "",
-                "groupPrincipalId": null,
-                "id": "globalrolebinding-cs4v4",
-                "labels": {
-                "authz.management.cattle.io/bootstrapping": "admin-user"
-                },
-                "links": {
-                "remove": "…/v3/globalRoleBindings/globalrolebinding-cs4v4",
-                "self": "…/v3/globalRoleBindings/globalrolebinding-cs4v4",
-                "update": "…/v3/globalRoleBindings/globalrolebinding-cs4v4"
-                },
-                "name": "globalrolebinding-cs4v4",
-                "status": {
-                "lastUpdateTime": "",
-                "localConditions": [ 4 items
-                {
-                "lastTransitionTime": "",
-                "message": "",
-                "reason": "SubjectExists",
-                "status": "True",
-                "type": "SubjectReconciled"
-                },
-                {
-                "lastTransitionTime": "",
-                "message": "",
-                "reason": "ClusterPermissionsReconciled",
-                "status": "True",
-                "type": "ClusterPermissionsReconciled"
-                },
-                {
-                "lastTransitionTime": "",
-                "message": "",
-                "reason": "GlobalRoleBindingReconciled",
-                "status": "True",
-                "type": "GlobalRoleBindingReconciled"
-                },
-                {
-                "lastTransitionTime": "",
-                "message": "",
-                "reason": "NamespacedRoleBindingReconciled",
-                "status": "True",
-                "type": "NamespacedRoleBindingReconciled"
-                }
-                ],
-                "observedGenerationLocal": 1,
-                "observedGenerationRemote": 2,
-                "remoteConditions": [
-                {
-                "lastTransitionTime": "",
-                "message": "",
-                "reason": "ClusterAdminRoleExists",
-                "status": "True",
-                "type": "ClusterAdminRoleExists"
-                }
-                ],
-                "summary": "Completed",
-                "summaryLocal": "Completed",
-                "summaryRemote": "Completed",
-                "type": "/v3/schemas/globalRoleBindingStatus"
-                },
-                "type": "globalRoleBinding",
-                "userId": "{{.userId}}",
-                "userPrincipalId": "local://{{.userId}}",
-                "uuid": ""
-                }
-                ]
-                }
-          bodyParams:
-            - name: userid
-              description: userid of the user
-              type: string
-          description: global role bindings in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        globalRoles: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/globalroles
-          requestBody: |
-                {
-                "username": {{.username}}
-                }
-          bodyParams:
-            - name: username
-              description: name of the user
-              type: string
-          description: global roles in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        groupMembers: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/groupmembers
-          requestBody: |
-                {
-                "username": {{.username}}
-                }
-          bodyParams:
-            - name: username
-              description: name of the user
-              type: string
-          description: group members in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        groups: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/groups
-          requestBody: |
-                {
-                "username": {{.username}}
-                }
-          bodyParams:
-            - name: username
-              description: name of the user
-              type: string
-          description: groups in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        kontainerDrivers: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/kontainerdrivers
-          description: containers drivers in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        ldapConfigs: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/ldapconfigs
-          description: ldap configurations in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        managementSecrets: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/managementsecrets
-          description: management secrets in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        nodeDrivers: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/nodedrivers
-          description: node drivers in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        nodePools: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/nodepools
-          description: node pools in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        nodeTemplates: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/nodetemplates
-          description: node templates in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        nodes: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/nodes
-          description: nodes in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        podSecurityAdmissionConfigurationTemplates: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/podsecurityadmissionconfigurationtemplates
-          description: pod security admission configuration templates in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        preferences: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/preferences
-          description: preferences in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        principals: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/principals
-          description: principals in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        projectNetworkPolicies: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/projectnetworkpolicies
-          description: project network polices in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        projectRoleTemplateBindings: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/projectroletemplatebindings
-          description: project role template bindings in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        projects: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/projects
-          description: projects in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        rancherUserNotifications: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/rancherusernotifications
-          description: Rancher user notifications
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        rkeAddons: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/rkeaddons
-          description: RKE2 addons in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        rkeK8sServiceOptions: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/rkek8sserviceoptions
-          description: RKE2 kubernetes service options in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        rkeK8sSystemImages: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/rkek8ssystemimages
-          description: RKE2 system images in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        roleTemplates: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/roletemplates
-          description: role templates in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        root: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3
-          description: root api in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        samlTokens: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/samltokens
-          description: samltokens in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        self: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3
-          description: self api in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        settings: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/settings
-          description: settings in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        subscribe: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/subscribe
-          description: subscribe api in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        tokens: 
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/tokens
-          description: tokens in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        users:
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/users
-          description: find all users in Rancher
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-        userById:
-          kind: http
-          source: rancher-api
-          method: GET
-          path: /v3/users
-          queryParams:
-          requestBody: |
-                {
-                      "actions": {
-                      "refreshauthprovideraccess": "…/v3/users/{{.userId}}?action=refreshauthprovideraccess",
-                      "setpassword": "…/v3/users/{{.userId}}?action=setpassword"
-                      },
-                      "annotations": {
-                      },
-                      "links": {
-                      "clusterRoleTemplateBindings": "…/v3/clusterRoleTemplateBindings?userId={{.userId}}",
-                      "globalRoleBindings": "…/v3/globalRoleBindings?userId={{.userId}}",
-                      "projectRoleTemplateBindings": "…/v3/projectRoleTemplateBindings?userId={{.userId}}",
-                      "remove": "…/v3/users/{{.userId}}",
-                      "self": "…/v3/users/{{.userId}}",
-                      "tokens": "…/v3/tokens?userId={{.userId}}",
-                      "update": "…/v3/users/{{.userId}}"
-                      },
-                      "me": true,
-                      "mustChangePassword": false,
-                      "name": "",
-                      "principalIds": [
-                      "local://{{.userId}}"
-                      ],
-                      "state": "",
-                      "transitioning": "no",
-                      "transitioningMessage": "",
-                      "type": "user",
-                      "username": "",
-                      "uuid": ""
-                }
-          bodyParams:
-            - name: userid
-              description: name of the user
-              type: string
-          headerParams:
-          - name: Authorization # Example LLM input: "Bearer xyz1234"
-            description: Rancher authorization token
-            type: string
-          description: find a user in Rancher by userId
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+        description: find a user in Rancher by userId
 
     toolsets:
       my-toolset:
