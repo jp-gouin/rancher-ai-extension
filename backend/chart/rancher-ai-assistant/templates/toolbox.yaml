@@ -22,7 +22,7 @@ spec:
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-        app.kubernetes.io/component: mcpo
+        app.kubernetes.io/component: toolbox
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -71,11 +71,8 @@ spec:
       {{- with .Values.volumes }}
       volumes:
         - name: toolbox-config
-          secret:
-            secretName: {{ include "rancher-ai-assistant.fullname" . }}-toolbox-config
-            items:
-            - key: tools.yaml
-              path: tools.yaml
+          configMap:
+            name: {{ include "rancher-ai-assistant.fullname" . }}-toolbox-config
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
