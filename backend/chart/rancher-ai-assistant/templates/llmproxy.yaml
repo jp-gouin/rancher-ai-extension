@@ -4,11 +4,13 @@ metadata:
   name: {{ include "rancher-ai-assistant.fullname" . }}
   labels:
     {{- include "rancher-ai-assistant.labels" . | nindent 4 }}
+    app.kubernetes.io/component: llmproxy
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       {{- include "rancher-ai-assistant.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: llmproxy
   template:
     metadata:
       {{- with .Values.podAnnotations }}
