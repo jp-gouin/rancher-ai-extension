@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: jpgouin/rancher-ai-assistant-backend:0.1.0-rc8 
+          image: jpgouin/rancher-ai-assistant-backend:0.1.0
           ports:
             - containerPort: 8000
 

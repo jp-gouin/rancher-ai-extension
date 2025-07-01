@@ -2,3 +2,5 @@ fastapi
 uvicorn
 sse-starlette
 ollama
+httpx
+jsonref

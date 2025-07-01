@@ -1,6 +1,7 @@
 // ./product.ts
 import { IPlugin } from '@shell/core/types';
 
+
 // this is the definition of a "blank cluster" for Rancher Dashboard
 // definition of a "blank cluster" in Rancher Dashboard
 const BLANK_CLUSTER = '_';
@@ -27,7 +28,7 @@ export function init($plugin: IPlugin, store: any) {
     inStore: 'management',
     weight: 100,
     to: {
-      name: `${ YOUR_PRODUCT_NAME }-c-cluster-${ CUSTOM_PAGE_NAME }`,
+      name: `${ YOUR_PRODUCT_NAME }-c-cluster-${ CUSTOM_PAGE_SCHAT }`,
       params: {
         product: YOUR_PRODUCT_NAME,
         cluster: BLANK_CLUSTER
@@ -103,5 +104,5 @@ export function init($plugin: IPlugin, store: any) {
   });
 
   // registering the defined pages as side-menu entries
-  basicType([YOUR_K8S_RESOURCE_NAME, CUSTOM_PAGE_NAME, CUSTOM_PAGE_CONFIG, CUSTOM_PAGE_OWUI, CUSTOM_PAGE_SCHAT]);
+  basicType([CUSTOM_PAGE_CONFIG, CUSTOM_PAGE_SCHAT]);
 }

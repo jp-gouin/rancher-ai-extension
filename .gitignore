@@ -73,3 +73,7 @@ Thumbs.db
 dist-pkg
 
 kubernetes
+
+.venv
+backend/__pycache__
+backend/__pycache__/main.cpython-313.pyc

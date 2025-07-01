@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "rancher-ai-assistant.fullname" . }}-toolbox
+  labels:
+    {{- include "rancher-ai-assistant.labels" . | nindent 4 }}
+    app.kubernetes.io/component: toolbox
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "rancher-ai-assistant.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: toolbox
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "rancher-ai-assistant.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        app.kubernetes.io/component: mcpo
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rancher-ai-assistant.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-toolbox
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.toolbox.image.repository }}:{{ .Values.toolbox.image.tag }}"
+          imagePullPolicy: {{ .Values.toolbox.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          command: ["mcpo"] # Entrypoint of the container
+          args: 
+            - "--address"
+            - "0.0.0.0"
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            - name: toolbox-config
+              mountPath: "/app/tools.yaml"
+              subPath: tools.yaml
+              readOnly: true
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        - name: toolbox-config
+          secret:
+            secretName: {{ include "rancher-ai-assistant.fullname" . }}-toolbox-config
+            items:
+            - key: tools.yaml
+              path: tools.yaml
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

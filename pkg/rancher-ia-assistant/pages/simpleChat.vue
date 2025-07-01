@@ -1,7 +1,6 @@
 <template>
   <div class="chat-container">
     <h1 class="title">✨ Rancher AI Assistant</h1>
-
     <main class="chat-main">
       <div v-for="(msg, i) in messages" :key="i" class="message" :class="msg.role">
         <div v-if="msg.role == 'user'" class="bubble">{{ msg.content }}</div>
@@ -12,7 +11,7 @@
           </div>
           <div v-if="msg.streamedResponse" :class="{ streamed: msg.streaming }" >
             <hr class="rounded">
-            <span>{{ msg.streamedResponse }}</span>
+            <span v-html="msg.content"></span>
           </div>
         </div>
       </div>
@@ -31,32 +30,47 @@
 </template>
 
 <script>
+import Markdown from '@shell/components/Markdown';
+import MarkdownIt from 'markdown-it'
+
 export default {
   name: "Chat",
+  components: { Markdown },
   data() {
     return {
       input: "",
       messages: [],
       streaming: false,
       backendurl: this.$store.getters['rancher-ai-assistant/backend'],
+      md: new MarkdownIt({
+        html: true,
+        breaks: true,
+        linkify: true,
+        typographer: true,
+      }),
     };
   },
   methods: {
     sendPrompt() {
       if (!this.input.trim()) return;
       const prompt = this.input.trim();
-
+      
       // Add user message
       this.messages.push({ role: "user", content: prompt, streaming: false });
-      this.messages.push({ role: "assistant", content: "", streamedThinking: "",streamedResponse: "" ,isThinking: false, streaming: false, expanded: true });
+      this.messages.push({ role: "assistant", content: "", streamedThinking: "Connecting...",streamedResponse: "" ,isThinking: true, streaming: false, expanded: true });
       this.input = "";
- 
-      const eventSource = new EventSource("https://rancher.10.144.97.97.sslip.io/api/v1/namespaces/suseai/services/http:rancher-ai-backend:80/proxy/chat?prompt=" + encodeURIComponent(prompt), { withCredentials: true });
-
+      // Connect to the eventsource using the window location to get the correct URL
+      const url = window.location.origin;
+      const eventSource = new EventSource(url+"/api/v1/namespaces/suseai/services/http:rancher-ai-backend:80/proxy/chat?prompt=" + encodeURIComponent(prompt), { withCredentials: true });
+      //const eventSource = new EventSource("http://localhost:8000/chat?prompt=" + encodeURIComponent(prompt), { withCredentials: true });
       eventSource.onmessage = (event) => {
         let currentMessage = this.messages[this.messages.length - 1];
         currentMessage.streaming = true;
+        if (currentMessage.streamedThinking == "Connecting...") {
+            currentMessage.streamedThinking = "";
+        }
         const line = event.data;
+       // const line = decoder.decode(value, { stream: true });
         if (line.includes('<think>')) {
           currentMessage.isThinking = true;
           return;
@@ -66,15 +80,17 @@ export default {
           return;
         }
         if(line.includes('[END]]')){
-          currentMessage.content = currentMessage.streamedResponse;
+          //currentMessage.content = this.md.render(currentMessage.streamedResponse);
           currentMessage.streaming = false;
           //currentMessage.streamedResponse = "";
           return; 
         }
+
         if (currentMessage.isThinking) { 
           currentMessage.streamedThinking += line
         }else {
           currentMessage.streamedResponse += line;
+          currentMessage.content = this.md.render(currentMessage.streamedResponse);
         }
         
       };
@@ -106,7 +122,7 @@ export default {
   flex-direction: column;
   height: 100%;
   font-family: Arial, sans-serif;
-  background: #1e1e1e;
+  background: var(--body-bg);;
   color: white;
 }
 
@@ -119,7 +135,7 @@ export default {
   flex: 1;
   padding: 16px;
   overflow-y: auto;
-  background: #1e1e1e;
+  background: var(--body-bg);;
 }
 
 .message {
@@ -146,7 +162,7 @@ export default {
   margin-top: 6px;
   font-family: monospace;
   font-size: 0.85rem;
-  color: #9b9b9b;
+  color: var(--body-text);
 }
 .thinking {
   min-width: 15rem;
@@ -158,7 +174,7 @@ export default {
 }
 
 .assistant .bubble {
-  color: #f1f1f1;
+  color: var(--body-text);
   min-width: 20rem;
 }
 
