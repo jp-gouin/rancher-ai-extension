@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "rancher-ai-assistant.fullname" . }}
+  name: rancher-ai-backend
   labels:
     {{- include "rancher-ai-assistant.labels" . | nindent 4 }}
     app.kubernetes.io/component: mcpo
