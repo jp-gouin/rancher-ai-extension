@@ -65,17 +65,13 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
-          {{- end }}
-      {{- with .Values.volumes }}
       volumes:
         - name: config-volume
           configMap:
             name: {{ include "rancher-ai-assistant.fullname" . }}-mcpo
-      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

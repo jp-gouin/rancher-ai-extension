@@ -60,19 +60,13 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
             - name: toolbox-config
-              mountPath: "/app/tools.yaml"
-              subPath: tools.yaml
-              readOnly: true
-          {{- end }}
-      {{- with .Values.volumes }}
+              mountPath: "/app"
       volumes:
         - name: toolbox-config
           configMap:
             name: {{ include "rancher-ai-assistant.fullname" . }}-toolbox-config
-      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

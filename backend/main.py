@@ -191,3 +191,10 @@ async def chat_endpoint(request: Request, prompt: str = ""):
         yield f"[END]]\n\n"
 
     return EventSourceResponse(event_generator())
+# ------------------- API -------------------
+@app.get("/alive")
+async def chat_endpoint(request: Request):
+    """
+    Endpoint to check if the server is alive.
+    """
+    return {"status": "alive", "timestamp": datetime.now().isoformat()}
