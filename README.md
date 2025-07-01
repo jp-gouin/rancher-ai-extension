@@ -16,16 +16,3 @@
 
 To get started, navigate to the rancher-ai-extension icon (star) on the left panel.
 
-# How to configure
-
-1. Open the extension page
-2. Set `Ollama API URL` to OpenWebUI url
-3. Go to your OpenWebUI > `User` > `Settings` > `Account` and copy the API Key
-4. Copy the API Key in `Ollama API Token (optional)`
-5. Click on Save
-
-# How to use
-
-The `RancherBot` page is a chatbot (basic and limited)
-
-The RancherBotOWUI is an iframe to the OpenWebUI instance
