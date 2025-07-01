@@ -50,7 +50,7 @@ spec:
             - "--port"
             - "8000"
             - "--api-key"
-            - "{ .Values.mcpo.key }}"
+            - "{{ .Values.mcpo.key }}"
             - "--config"
             - "/etc/config/config.json"
           {{- /*
