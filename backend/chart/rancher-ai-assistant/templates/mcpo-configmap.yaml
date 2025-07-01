@@ -8,7 +8,7 @@ data:
       "mcpServers": {     
         "toolbox": {
           "type": "sse",
-          "url": "http://toolbox-service:5000/mcp/sse"
+          "url": "http://{{ include "rancher-ai-assistant.fullname" . }}-toolbox.{{- .Release.Namespace -}}.svc.cluster.local:5000/mcp/sse"
         }
       }
     }

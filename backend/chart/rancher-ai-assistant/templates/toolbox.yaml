@@ -45,7 +45,6 @@ spec:
             - name: http
               containerPort: 5000
               protocol: TCP
-          command: ["mcpo"] # Entrypoint of the container
           args: 
             - "--address"
             - "0.0.0.0"
