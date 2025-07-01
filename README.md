@@ -49,3 +49,18 @@ A `local` cluster with:
 10. Once the extension has finished installing, click the 'Reload' button that will appear at the top of the page.
 
 To get started, navigate to the rancher-ai-extension icon (star) on the left panel.
+
+## Add a new user to talk to the AI assistant
+
+To be able to interact with the assistant, the user needs to be a Project Member on `suseai` namespace (Project Default)
+
+1. Go to `local` cluster
+2. Click on `Projects/Namespaces`
+3. Click on `Edit Config` on the `Project Default`
+4. Click on `Add` from the `Members` tab
+5. Select the user to be added
+    * **Project Permission**: Project Member
+6. Click on `Save`\
+
+> [!NOTE]  
+> A Tailored role can be created, the user only need to access `service/proxy` on the namespace `suseai`  
