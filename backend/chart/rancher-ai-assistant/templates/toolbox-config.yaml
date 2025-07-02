@@ -5,17 +5,16 @@ metadata:
 data:
   tools.yaml: |
     sources:
-    rancher-api:
-        kind: http
-        baseUrl: https://rancher.cattle-system.svc.cluster.local:443/
-        headers:
-          Authorization: Bearer token-kkd46:bf5f6pnzbd4l67ndgx7rlzds8rq9bzgj7dxj9h7shmxk4qdb5xgrm2
-          # Authorization: Bearer token-z7n4g:hxfwbbcvxxkcxgrjqk8f8w67q8sth96kncg6bg8x5mlb8pqrklclkt
-          Content-Type: application/json
-        disableSslVerification: true
-    rancher-docs:
-        kind: http
-        baseUrl: https://ranchermanager.docs.rancher.com/
+      rancher-api:
+          kind: http
+          baseUrl: https://rancher.cattle-system.svc.cluster.local:443/
+          headers:
+            Authorization: Bearer abc
+            Content-Type: application/json
+          disableSslVerification: true
+      rancher-docs:
+          kind: http
+          baseUrl: https://ranchermanager.docs.rancher.com/
     tools:
         clusterRoleTemplateBindings:
           kind: http
