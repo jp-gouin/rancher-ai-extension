@@ -39,8 +39,8 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: "{{ .Values.toolbox-rancher.image.repository }}:{{ .Values.toolbox-rancher.image.tag }}"
-          imagePullPolicy: {{ .Values.toolbox-rancher.image.pullPolicy }}
+          image: "{{ .Values.toolboxRancher.image.repository }}:{{ .Values.toolboxRancher.image.tag }}"
+          imagePullPolicy: {{ .Values.toolboxRancher.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 8080
