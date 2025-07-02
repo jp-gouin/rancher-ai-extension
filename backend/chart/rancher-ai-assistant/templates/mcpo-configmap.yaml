@@ -9,10 +9,6 @@ data:
         "toolbox": {
           "type": "sse",
           "url": "http://{{ include "rancher-ai-assistant.fullname" . }}-toolbox.{{- .Release.Namespace -}}.svc.cluster.local:5000/mcp/sse"
-        },
-        "toolbox-rancher-pub-api": {
-          "type": "sse",
-          "url": "http://{{ include "rancher-ai-assistant.fullname" . }}-toolbox-rancher-pubapi.{{- .Release.Namespace -}}.svc.cluster.local:8080"
         }
       }
     }
