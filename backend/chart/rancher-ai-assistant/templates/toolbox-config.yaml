@@ -461,6 +461,83 @@ data:
         - name: Authorization # Example LLM input: "Bearer xyz1234"
           description: Rancher authorization token
           type: string
+      createProjects: 
+        kind: http
+        source: rancher-api
+        method: POST
+        path: /v3/projects
+        description: create a project in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+        requestBody: |
+          {
+            "type": "project",
+            "name": "{{.name}}",
+            "annotations": {},
+            "labels": {},
+            "clusterId": "{{.clusterID}}",
+            "creatorId": "{{.userID}}",
+            "containerDefaultResourceLimit": {},
+            "resourceQuota": {},
+            "namespaceDefaultResourceQuota": {}
+          }
+        bodyParams:
+          - name: name
+            description: name string
+            type: string
+          - name: clusterID
+            description: clusterID string
+            type: string
+          - name: userID
+            description: userID string
+            type: string
+      createPods: 
+        kind: http
+        source: rancher-api
+        method: POST
+        path: /k8s/clusters/{{.clusterID}}/v1/pods
+        description: create a pod in a namespace in a cluster in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+        pathParams:
+        - name: clusterID
+          type: string
+          description: the clusterID where the pod will be created
+        requestBody: |
+          {
+            "metadata": {
+              "namespace": "{{.namespace}}",
+              "name": "{{.name}}",
+            },
+            "spec": {
+              "containers": [
+                {
+                  "imagePullPolicy": "Always",
+                  "name": "container-0",
+                  "volumeMounts": [],
+                  "image": "{{.image}}",
+                }
+              ],
+              "initContainers": [],
+              "imagePullSecrets": [],
+              "volumes": [],
+              "affinity": {}
+            }
+          }
+        bodyParams:
+          - name: name
+            description: name string
+            type: string
+          - name: image
+            description: image string similar to nginx:latest
+            type: string
+          - name: namespace
+            description: namespace string
+            type: string
       rancherUserNotifications: 
         kind: http
         source: rancher-api
@@ -672,3 +749,5 @@ data:
         - users
         - userById
         - userPermissions
+        - createPods
+        - createProjects
