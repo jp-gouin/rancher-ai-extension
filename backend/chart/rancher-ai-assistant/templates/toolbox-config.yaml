@@ -541,7 +541,7 @@ data:
       createPodsInLocalCluster: 
         kind: http
         source: rancher-api
-        method: POST
+        method: PUT
         path: /v1/pods
         description: create a pod in a namespace in the local cluster in Rancher
         headerParams:
