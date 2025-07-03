@@ -46,11 +46,11 @@ mcpo:
   key: "top-secret"
 toolbox:
   image:
-    repository: ghcr.io/alessandro-festa/toolbox
+    repository: us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox
     # This sets the pull policy for images.
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "latest"
+    tag: "0.8.0"
 toolboxRancher:
   image:
     repository: ghcr.io/brizzai/auto-mcp

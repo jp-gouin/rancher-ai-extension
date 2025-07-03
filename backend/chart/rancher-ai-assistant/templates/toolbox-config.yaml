@@ -538,6 +538,47 @@ data:
           - name: namespace
             description: namespace string
             type: string
+      createPodsInLocalCluster: 
+        kind: http
+        source: rancher-api
+        method: POST
+        path: /v1/pods
+        description: create a pod in a namespace in the local cluster in Rancher
+        headerParams:
+        - name: Authorization # Example LLM input: "Bearer xyz1234"
+          description: Rancher authorization token
+          type: string
+        requestBody: |
+          {
+            "metadata": {
+              "namespace": "{{.namespace}}",
+              "name": "{{.name}}",
+            },
+            "spec": {
+              "containers": [
+                {
+                  "imagePullPolicy": "Always",
+                  "name": "container-0",
+                  "volumeMounts": [],
+                  "image": "{{.image}}",
+                }
+              ],
+              "initContainers": [],
+              "imagePullSecrets": [],
+              "volumes": [],
+              "affinity": {}
+            }
+          }
+        bodyParams:
+          - name: name
+            description: name string
+            type: string
+          - name: image
+            description: image string similar to nginx:latest
+            type: string
+          - name: namespace
+            description: namespace string
+            type: string
       rancherUserNotifications: 
         kind: http
         source: rancher-api
