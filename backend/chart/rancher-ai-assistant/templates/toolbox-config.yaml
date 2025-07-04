@@ -169,9 +169,9 @@ data:
               },
               "sort": {
               "order": "asc",
-              "reverse": "…/v3/globalRoleBindings?order=desc&userId={{.userId}}",
+              "reverse": "…/v3/globalRoleBindings?order=desc&userId{{- printf "%s" "={{.userId}}" -}}",
               "links": {
-              "uuid": "…/v3/globalRoleBindings?sort=uuid&userId={{.userId}}"
+              "uuid": "…/v3/globalRoleBindings?sort=uuid&userId{{- printf "%s" "={{.userId}}" -}}"
               }
               },
               "filters": {
@@ -184,7 +184,7 @@ data:
               "userId": [
               {
               "modifier": "eq",
-              "value": "{{.userId}}"
+              "value": {{- printf "%s" "{{.userId}}" | quote | indent 1 -}}
               }
               ],
               "userPrincipalId": null,
@@ -262,7 +262,7 @@ data:
               "type": "/v3/schemas/globalRoleBindingStatus"
               },
               "type": "globalRoleBinding",
-              "userId": "{{.userId}}",
+              "userId": {{- printf "%s" "{{.userId}}" | quote | indent 1 -}},
               "userPrincipalId": "local://{{.userId}}",
               "uuid": ""
               }
@@ -284,7 +284,7 @@ data:
         path: /v3/globalroles
         requestBody: |
               {
-              "username": {{.username}}
+              "username": {{- printf "%s" "{{.username}}" | quote | indent 1 -}}
               }
         bodyParams:
           - name: username
@@ -302,7 +302,7 @@ data:
         path: /v3/groupmembers
         requestBody: |
               {
-              "username": {{.username}}
+              "username": {{- printf "%s" "{{.username}}" | quote | indent 1 -}}
               }
         bodyParams:
           - name: username
@@ -320,7 +320,7 @@ data:
         path: /v3/groups
         requestBody: |
               {
-              "username": {{.username}}
+              "username": {{- printf "%s" "{{.username}}" | quote | indent 1 -}}
               }
         bodyParams:
           - name: username
@@ -474,11 +474,11 @@ data:
         requestBody: |
           {
             "type": "project",
-            "name": "{{.name}}",
+            "name": {{- printf "%s" {{- printf "%s" "{{.name}}" | quote | indent 1 -}} | quote | indent 1 -}},
             "annotations": {},
             "labels": {},
-            "clusterId": "{{.clusterID}}",
-            "creatorId": "{{.userID}}",
+            "clusterId": {{- printf "%s" "{{.clusterID}}" | quote | indent 1 -}},
+            "creatorId": {{- printf "%s" "{{.userID}}" | quote | indent 1 -}},
             "containerDefaultResourceLimit": {},
             "resourceQuota": {},
             "namespaceDefaultResourceQuota": {}
@@ -497,7 +497,7 @@ data:
         kind: http
         source: rancher-api
         method: POST
-        path: /k8s/clusters/{{.clusterID}}/v1/pods
+        path: /k8s/clusters/{{- printf "%s" "{{.clusterID}}" -}}/v1/pods
         description: create a pod in a namespace in a cluster in Rancher
         headerParams:
         - name: Authorization # Example LLM input: "Bearer xyz1234"
@@ -510,8 +510,8 @@ data:
         requestBody: |
           {
             "metadata": {
-              "namespace": "{{.namespace}}",
-              "name": "{{.name}}"
+              "namespace": {{- printf "%s" "{{.namespace}}" | quote | indent 1 -}},
+              "name": {{- printf "%s" "{{.name}}" | quote | indent 1 -}}
             },
             "spec": {
               "containers": [
@@ -519,7 +519,7 @@ data:
                   "imagePullPolicy": "Always",
                   "name": "container-0",
                   "volumeMounts": [],
-                  "image": "{{.image}}"
+                  "image": {{- printf "%s" "{{.image}}" | quote | indent 1 -}}
                 }
               ],
               "initContainers": [],
@@ -551,8 +551,8 @@ data:
         requestBody: |
           {
             "metadata": {
-              "namespace": "{{.namespace}}",
-              "name": "{{.name}}"
+              "namespace": {{- printf "%s" "{{.namespace}}" | quote | indent 1 -}},
+              "name": {{- printf "%s" "{{.name}}" | quote | indent 1 -}}
             },
             "spec": {
               "containers": [
@@ -560,7 +560,7 @@ data:
                   "imagePullPolicy": "Always",
                   "name": "container-0",
                   "volumeMounts": [],
-                  "image": "{{.image}}"
+                  "image": {{- printf "%s" "{{.image}}" | quote | indent 1 -}}
                 }
               ],
               "initContainers": [],
@@ -714,12 +714,12 @@ data:
                     "annotations": {
                     },
                     "links": {
-                    "clusterRoleTemplateBindings": "…/v3/clusterRoleTemplateBindings?userId={{.userId}}",
-                    "globalRoleBindings": "…/v3/globalRoleBindings?userId={{.userId}}",
-                    "projectRoleTemplateBindings": "…/v3/projectRoleTemplateBindings?userId={{.userId}}",
+                    "clusterRoleTemplateBindings": "…/v3/clusterRoleTemplateBindings?userId{{- printf "%s" "={{.userId}}" -}}",
+                    "globalRoleBindings": "…/v3/globalRoleBindings?userId{{- printf "%s" "={{.userId}}" -}}",
+                    "projectRoleTemplateBindings": "…/v3/projectRoleTemplateBindings?userId{{- printf "%s" "={{.userId}}" -}}",
                     "remove": "…/v3/users/{{.userId}}",
                     "self": "…/v3/users/{{.userId}}",
-                    "tokens": "…/v3/tokens?userId={{.userId}}",
+                    "tokens": "…/v3/tokens?userId{{- printf "%s" "={{.userId}}" -}}",
                     "update": "…/v3/users/{{.userId}}"
                     },
                     "me": true,
