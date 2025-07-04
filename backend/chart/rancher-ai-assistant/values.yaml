@@ -52,7 +52,7 @@ toolbox:
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     # tag: "0.8.0"
-    tag: "latest"
+    tag: "0.8.0-rc2"
 toolboxRancher:
   image:
     repository: ghcr.io/brizzai/auto-mcp
