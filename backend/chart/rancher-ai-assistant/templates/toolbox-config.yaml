@@ -474,7 +474,7 @@ data:
         requestBody: |
           {
             "type": "project",
-            "name": {{- printf "%s" {{- printf "%s" "{{.name}}" | quote | indent 1 -}} | quote | indent 1 -}},
+            "name": {{- printf "%s" "{{.name}}" | quote | indent 1 -}},
             "annotations": {},
             "labels": {},
             "clusterId": {{- printf "%s" "{{.clusterID}}" | quote | indent 1 -}},
