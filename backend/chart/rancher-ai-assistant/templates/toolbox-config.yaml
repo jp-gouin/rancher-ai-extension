@@ -511,7 +511,7 @@ data:
           {
             "metadata": {
               "namespace": "{{.namespace}}",
-              "name": "{{.name}}",
+              "name": "{{.name}}"
             },
             "spec": {
               "containers": [
@@ -519,7 +519,7 @@ data:
                   "imagePullPolicy": "Always",
                   "name": "container-0",
                   "volumeMounts": [],
-                  "image": "{{.image}}",
+                  "image": "{{.image}}"
                 }
               ],
               "initContainers": [],
@@ -541,7 +541,7 @@ data:
       createPodsInLocalCluster: 
         kind: http
         source: rancher-api
-        method: PUT
+        method: POST
         path: /v1/pods
         description: create a pod in a namespace in the local cluster in Rancher
         headerParams:
@@ -552,7 +552,7 @@ data:
           {
             "metadata": {
               "namespace": "{{.namespace}}",
-              "name": "{{.name}}",
+              "name": "{{.name}}"
             },
             "spec": {
               "containers": [
@@ -560,7 +560,7 @@ data:
                   "imagePullPolicy": "Always",
                   "name": "container-0",
                   "volumeMounts": [],
-                  "image": "{{.image}}",
+                  "image": "{{.image}}"
                 }
               ],
               "initContainers": [],

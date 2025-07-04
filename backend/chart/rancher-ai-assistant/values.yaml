@@ -46,11 +46,13 @@ mcpo:
   key: "top-secret"
 toolbox:
   image:
-    repository: us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox
+    # repository: us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox
+    repository: jpgouin/genai-toolbox
     # This sets the pull policy for images.
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "0.8.0"
+    # tag: "0.8.0"
+    tag: "latest"
 toolboxRancher:
   image:
     repository: ghcr.io/brizzai/auto-mcp
