@@ -12,7 +12,7 @@ import jsonref
 
 rancher_server = os.getenv('RANCHER_URL', "https://rancher.10.144.97.97.sslip.io")
 base_url = os.getenv('OLLAMA_SERVER_URL', "http://open-webui-ollama.suseai.svc.cluster.local:11434")
-mcpo_url = os.getenv('MCPO_URL', "http://mcpo-service.suseai.svc.cluster.local:8000/toolbox")
+mcpo_url = os.getenv('MCPO_URL', "http://localhost:8090/toolbox")
 
 app = FastAPI()
 app.add_middleware(
@@ -91,9 +91,14 @@ def openapi_to_functions(openapi_spec):
                 .get("schema")
             )
             if req_body:
-                schema["properties"]["requestBody"] = req_body
+                schema = req_body
+            
+            # test if req_body["required"] exist and if it is a list that contains "Authorization", if it's true then remove "Authorization" from the list
+            if "required" in req_body and isinstance(req_body["required"], list):
+                if "Authorization" in req_body["required"]:
+                    req_body["required"].remove("Authorization")
 
-            params = spec.get("parameters", [])
+            """ params = spec.get("parameters", [])
             if params:
                 param_properties = {
                     param["name"]: param["schema"]
@@ -103,7 +108,7 @@ def openapi_to_functions(openapi_spec):
                 schema["properties"]["parameters"] = {
                     "type": "object",
                     "properties": param_properties,
-                }
+                } """
 
             functions.append(
                 {"type": "function", "function": {"name": function_name, "description": desc, "parameters": schema}}
@@ -131,13 +136,15 @@ async def chat_endpoint(request: Request, prompt: str = ""):
                                                       headers={"Authorization": "Bearer top-secret"})
                 tools = jsonref.loads(tools_response.text)
                 functions = openapi_to_functions(tools)
+                # print(functions)
+                print(functions)
         except Exception as e:
             yield {"data": f"Error loading tools: {str(e)}"}
             return
         # Open a stream to the LLM
         # ---- 1st Call: Initial model response w/ potential function_call ----
         stream = client.chat(
-            model="qwen3:1.7b",
+            model="qwen3:4b",
             messages=messages,
             tools=functions,
             stream=True
@@ -175,7 +182,7 @@ async def chat_endpoint(request: Request, prompt: str = ""):
 
             # Second LLM response using tool output
             second_stream = client.chat(
-                model="qwen3:1.7b",
+                model="qwen3:4b",
                 messages=messages,
                 stream=True
             )

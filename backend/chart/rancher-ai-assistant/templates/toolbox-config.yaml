@@ -466,7 +466,7 @@ data:
         source: rancher-api
         method: POST
         path: /v3/projects
-        description: create a project in Rancher
+        description: create a project in Rancher 
         headerParams:
         - name: Authorization # Example LLM input: "Bearer xyz1234"
           description: Rancher authorization token
@@ -478,7 +478,7 @@ data:
             "annotations": {},
             "labels": {},
             "clusterId": {{- printf "%s" "{{.clusterID}}" | quote | indent 1 -}},
-            "creatorId": {{- printf "%s" "{{.userID}}" | quote | indent 1 -}},
+            "creatorId": "aibot",
             "containerDefaultResourceLimit": {},
             "resourceQuota": {},
             "namespaceDefaultResourceQuota": {}
@@ -489,9 +489,6 @@ data:
             type: string
           - name: clusterID
             description: clusterID string
-            type: string
-          - name: userID
-            description: userID string
             type: string
       createPods: 
         kind: http
