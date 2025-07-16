@@ -9,15 +9,22 @@ import os
 from ollama import Client
 import httpx
 import jsonref
+import uuid
 
 rancher_server = os.getenv('RANCHER_URL', "https://rancher.10.144.97.97.sslip.io")
 base_url = os.getenv('OLLAMA_SERVER_URL', "http://open-webui-ollama.suseai.svc.cluster.local:11434")
 mcpo_url = os.getenv('MCPO_URL', "http://localhost:8090/toolbox")
-
+CONVERSATION_DIR = os.getenv('CONVERSATION_DIR', "/tmp/conversations")
+model = os.getenv('LLM_MODEL', "qwen3:4b")
+system_prompt = os.getenv('LLM_SYSTEM_PROMPT', "You are a helpful Rancher AI assistant trained to answer concisely and factually. Authorization header are always provided internally and should not be asked for. Limit the number of tools and function call.")
+# Ensure the conversation directory exists
+if not os.path.exists(CONVERSATION_DIR):
+    os.makedirs(CONVERSATION_DIR)
+session_store = {}
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[rancher_server], 
+    allow_origins=[rancher_server, "https://localhost:8005"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -115,20 +122,142 @@ def openapi_to_functions(openapi_spec):
             )
 
     return functions
+# ------------------ Store ------------------
+""" def get_or_create_conversation(token: str, conversation_id: str = None):
+    if token not in session_store:
+        session_store[token] = {}
+
+    if conversation_id is None:
+        conversation_id = str(uuid.uuid4())
+
+    if conversation_id not in session_store[token]:
+        session_store[token][conversation_id] = []
+
+    return conversation_id, session_store[token][conversation_id] """
+def get_or_create_conversation(token: str, conversation_id: str = None):
+    if not conversation_id:
+        conversation_id = str(uuid.uuid4())
+
+    path = get_conversation_path(token, conversation_id)
+
+    if os.path.exists(path):
+        with open(path, "r") as f:
+            messages = json.load(f)
+    else:
+        messages = []
+        with open(path, "w") as f:
+            json.dump(messages, f, indent=2)
+
+    return conversation_id, messages
+def save_conversation(token: str, conversation_id: str, messages: list):
+    path = get_conversation_path(token, conversation_id)
+    with open(path, "w") as f:
+        json.dump(messages, f, indent=2)
+
+def get_conversation_path(token: str, conversation_id: str) -> str:
+    return os.path.join(CONVERSATION_DIR, f"{token}_{conversation_id}.json")
 # ------------------- API -------------------
+async def chat_with_tools_loop(client, model, initial_messages, functions, rancher_auth):
+    messages = initial_messages.copy()
+    # limit the number of tools call if they fail to 2 in order to avoid infinite loops
+    tool_call_count = 0
+    max_tool_calls = 2
+    while True:
+        if tool_call_count < max_tool_calls:
+            stream = client.chat(
+                model=model,
+                messages=messages,
+                tools=functions,
+                stream=True
+            )
+        else:
+            stream = client.chat(
+                model=model,
+                messages=messages,
+                stream=True
+            )
+
+        tool_call = None
+        collected_message = {}
+        collected_content = ""
+
+        for chunk in stream:
+            msg = chunk.get("message", {})
+            content = msg.get("content", "")
+
+            if content:
+                collected_content += content
+                yield content
+                await asyncio.sleep(0.01)
+
+            collected_message = msg  # Save full message structure
+
+            # Detect tool call
+            if msg.get("tool_calls"):
+                tool_call = msg["tool_calls"][0]["function"]
+                break  # Stop streaming early to handle tool
+
+        if collected_content:
+            messages.append({
+                "role": "assistant",
+                "content": collected_content
+            })
+        # If no tool call, save final assistant message and break
+        if not tool_call:
+            break
+
+        # Tool call handling
+        tool_name = tool_call.name
+        # test if tool_call.arguments is a dict and if it is not a dict then try to parse it as json
+        if isinstance(tool_call.arguments, dict):
+            tool_args = tool_call.arguments
+        else :    
+            try:
+                tool_args = json.loads(tool_call.arguments)
+            except Exception as e:
+                print(f"Error parsing tool arguments: {str(e)}")
+                tool_args = {}
+        tool_args["Authorization"] = f"Bearer {rancher_auth}"
+        try:
+            tool_output = call_tool_by_name(tool_name, tool_args)
+        except Exception as e:
+            tool_output = f"Error calling tool {tool_name}: {str(e)}"
+            tool_call_count += 1
+
+        # Append assistant's partial response before tool call
+        if collected_message:
+            messages.append(collected_message)
+
+        # Append tool result
+        messages.append({
+            "role": "tool",
+            "name": tool_name,
+            "content": tool_output
+        })
+
+
 @app.get("/chat")
-async def chat_endpoint(request: Request, prompt: str = ""):
+async def chat_endpoint(request: Request, prompt: str = "", conversation_id: str = None):
     user_prompt = prompt
     # Get the cookie R_SESS if it exists from request.cookies
     if 'R_SESS' in request.cookies:
         rancher_auth = request.cookies['R_SESS']
     else:
         rancher_auth = f"none"
+    conversation_id, messages = get_or_create_conversation(rancher_auth, conversation_id)
+    # Initialize the conversation with a system message if it's a new conversation
+    if len(messages) == 0:
+        messages.append({
+            "role": "system",
+            "content": system_prompt
+        })
+    messages.append({"role": "user", "content": user_prompt})
     
     async def event_generator():
-        messages = [{"role": "user", "content": user_prompt}]
+        yield f"{json.dumps({'conversation_id': conversation_id})}\n\n"
         function_call = None
         functions = []
+        final_message = ""
 
         try:
             async with httpx.AsyncClient() as httpclient:
@@ -137,65 +266,18 @@ async def chat_endpoint(request: Request, prompt: str = ""):
                 tools = jsonref.loads(tools_response.text)
                 functions = openapi_to_functions(tools)
                 # print(functions)
-                print(functions)
         except Exception as e:
             yield {"data": f"Error loading tools: {str(e)}"}
             return
-        # Open a stream to the LLM
-        # ---- 1st Call: Initial model response w/ potential function_call ----
-        stream = client.chat(
-            model="qwen3:4b",
-            messages=messages,
-            tools=functions,
-            stream=True
-        )
-
-        collected_content = ""
-        for chunk in stream:  # sync generator!
-            print(chunk['message']['content'], end='', flush=True)
-            msg = chunk.get("message", {})
-            content = msg.get("content")
-            collected_content += content or ""
-
-            #if content:
-            yield f"{chunk['message']['content']}"
-            await asyncio.sleep(0.01)
-
-            if chunk.message.tool_calls:
-                function_call = chunk.message.tool_calls[0].function
-                break
-
-        # ---- 2nd Call: After tool execution ----
-        if function_call:
-            tool_name = function_call.name
-           # args = json.loads(function_call.arguments)
-           # insert rancher_auth into the function_call.arguments under the key header 
-            function_call.arguments["Authorization"] = f"Bearer {rancher_auth}"
-           
-            try:
-              tool_output = call_tool_by_name(tool_name, function_call.arguments)
-            except Exception as e:
-              tool_output = f"Error calling tool {tool_name}: {str(e)}"
-
-            messages.append(chunk.message)
-            messages.append({'role': 'tool', 'content': tool_output, 'name': tool_name})
-
-            # Second LLM response using tool output
-            second_stream = client.chat(
-                model="qwen3:4b",
-                messages=messages,
-                stream=True
-            )
-
-            for chunk in second_stream:
-                print(chunk['message']['content'], end='', flush=True)
-                content = chunk.get("message", {}).get("content")
-                #if content:
-                yield f"{chunk['message']['content']}"
-                await asyncio.sleep(0.01) 
-
+        async for content in chat_with_tools_loop(client, model, messages, functions, rancher_auth):
+            final_message += content
+            yield content
         yield f"[END]]\n\n"
-
+        messages.append({
+            "role": "assistant",
+            "content": final_message
+        })
+        save_conversation(rancher_auth, conversation_id, messages)
     return EventSourceResponse(event_generator())
 # ------------------- API -------------------
 @app.get("/alive")
@@ -204,3 +286,59 @@ async def chat_endpoint(request: Request):
     Endpoint to check if the server is alive.
     """
     return {"status": "alive", "timestamp": datetime.now().isoformat()}
+# ------------------- API -------------------
+""" @app.get("/conversations")
+async def list_conversations(request: Request):
+    if 'R_SESS' in request.cookies:
+        rancher_auth = request.cookies['R_SESS']
+    else:
+        rancher_auth = f"none"
+    return {
+        "conversations": list(session_store.get(rancher_auth, {}).keys())
+    } """
+@app.get("/conversations")
+async def list_conversations(request: Request):
+    if 'R_SESS' in request.cookies:
+        rancher_auth = request.cookies['R_SESS']
+    else:
+        rancher_auth = f"none"
+    conv_ids = []
+    prefix = f"{rancher_auth}_"
+
+    for file in os.listdir(CONVERSATION_DIR):
+        if file.startswith(prefix) and file.endswith(".json"):
+            conv_ids.append(file[len(prefix):-5])  # Strip prefix and .json
+
+    return {"conversations": conv_ids}
+""" @app.get("/conversation/{conversation_id}")
+async def get_conversation(request: Request, conversation_id: str):
+    if 'R_SESS' in request.cookies:
+        rancher_auth = request.cookies['R_SESS']
+    else:
+        rancher_auth = f"none"
+    convs = session_store.get(rancher_auth, {})
+    if conversation_id not in convs:
+        return {"error": "Conversation not found."}
+    return {"conversation_id": conversation_id, "messages": convs[conversation_id]} """
+@app.get("/conversation/{conversation_id}")
+async def get_conversation(request: Request, conversation_id: str):
+    """
+    Return the full message history of a specific conversation.
+    Requires the token that owns the conversation.
+    """
+    if 'R_SESS' in request.cookies:
+        rancher_auth = request.cookies['R_SESS']
+    else:
+        rancher_auth = f"none"
+    path = get_conversation_path(rancher_auth, conversation_id)
+
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="Conversation not found")
+
+    with open(path, "r") as f:
+        messages = json.load(f)
+
+    return {
+        "conversation_id": conversation_id,
+        "messages": messages
+    }

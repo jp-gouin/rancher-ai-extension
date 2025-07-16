@@ -52,6 +52,12 @@ spec:
               value: "http://{{ .Release.Name }}-ollama.{{- .Release.Namespace -}}.svc.cluster.local:11434"
             - name: MCPO_URL
               value: "http://{{ include "rancher-ai-assistant.fullname" . }}-mcpo.{{- .Release.Namespace -}}.svc.cluster.local/toolbox"
+            {{- with .Values.customSystemPrompt }}
+            - name: LLM_SYSTEM_PROMPT
+              value: "{{ .Values.customSystemPrompt }}"
+            {{- end }}
+            - name: LLM_MODEL
+              value: "{{ .Values.ollama.ollama.models.pull | first }}"
           {{- /*
  {{- with .Values.livenessProbe }}
           livenessProbe:
@@ -66,14 +72,21 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
+          
+          
           volumeMounts:
+            - name: conversations-pvc
+              mountPath: /tmp/conversations
+          {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.volumes }}
       volumes:
+        - name: conversations-pvc
+          persistentVolumeClaim:
+            claimName: {{ include "rancher-ai-assistant.fullname" . }}-pvc
+        {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
