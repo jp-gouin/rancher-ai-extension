@@ -10,7 +10,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.conversationsPvcSize }}
-  {{ {{- if .Values }}
-    storageClassName: {{ .Values.conversationsStorageClass | quote }}
-  {{- end -}}}}
-  
+  storageClassName: {{ .Values.conversationsStorageClass | quote }}
