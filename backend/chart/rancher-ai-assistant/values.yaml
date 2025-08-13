@@ -40,7 +40,7 @@ ollama:
     # -- List of models to pull at container startup
     models:
       pull:
-        - llama3.1:8b
+        - qwen3:8b
         - qwen3:4b
         - qwen3:1.7b
 
