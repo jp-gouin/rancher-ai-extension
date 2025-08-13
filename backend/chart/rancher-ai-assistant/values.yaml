@@ -7,7 +7,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.1.2-rc1"
+  tag: "0.1.2-rc10"
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -16,7 +16,7 @@ imagePullSecrets: []
 rancherUrl: "https://rancher.example.com"
 
 conversationsPvcSize: 1Gi
-conversationsStorageClass: standard
+conversationsStorageClass: default
 
 # customSystemPrompt: "You are a helpful AI assistant that can answer questions about Rancher, Kubernetes, and AI. You can also create pods in the local cluster using the Rancher API. If you don't know the answer, you can ask for more information or suggest to look it up."
 
