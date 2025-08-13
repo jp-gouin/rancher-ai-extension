@@ -48,11 +48,16 @@ spec:
           env: 
             - name: RANCHER_URL
               value: "{{ .Values.rancherUrl }}"
+            {{- if .Values.externalOllama }}
             - name: OLLAMA_SERVER_URL
-              value: "http://{{ .Release.Name }}-ollama.{{- .Release.Namespace -}}.svc.cluster.local:11434"
+              value: {{ .Values.externalOllamaUrl }}
+            {{- else }}
+            - name: OLLAMA_SERVER_URL
+              value: "http://{{ include "rancher-ai-assistant.fullname" . }}-ollama.{{- .Release.Namespace -}}.svc.cluster.local:11434"
+            {{- end }}
             - name: MCPO_URL
               value: "http://{{ include "rancher-ai-assistant.fullname" . }}-mcpo.{{- .Release.Namespace -}}.svc.cluster.local/toolbox"
-            {{- with .Values.customSystemPrompt }}
+            {{- if .Values.customSystemPrompt }}
             - name: LLM_SYSTEM_PROMPT
               value: "{{ .Values.customSystemPrompt }}"
             {{- end }}
@@ -72,8 +77,6 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          
-          
           volumeMounts:
             - name: conversations-pvc
               mountPath: /tmp/conversations

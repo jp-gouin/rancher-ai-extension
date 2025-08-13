@@ -21,7 +21,11 @@ conversationsStorageClass: standard
 # customSystemPrompt: "You are a helpful AI assistant that can answer questions about Rancher, Kubernetes, and AI. You can also create pods in the local cluster using the Rancher API. If you don't know the answer, you can ask for more information or suggest to look it up."
 
 # Ollama configuration
+# If you want to use an external Ollama server, set this to true and provide the URL.
+# externalOllamaUrl: ""
+# Internal ollama configuration
 ollama:
+  enabled: true
   ollama:
     gpu:
       # -- Enable GPU integration
@@ -36,6 +40,7 @@ ollama:
     # -- List of models to pull at container startup
     models:
       pull:
+        - llama3.1:8b
         - qwen3:4b
         - qwen3:1.7b
 
