@@ -48,7 +48,7 @@ spec:
           env: 
             - name: RANCHER_URL
               value: "{{ .Values.rancherUrl }}"
-            {{- if .Values.externalOllama }}
+            {{- if .Values.externalOllamaUrl }}
             - name: OLLAMA_SERVER_URL
               value: {{ .Values.externalOllamaUrl }}
             {{- else }}
